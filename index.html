@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEMO JS - FORM VALIDATE</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+    <header>
+        Patient Intake Form Template
+        <p>Take this form to investigate your patient before admission</p>
+    </header>
+    <form action="" id="form-patient">
+        <div class="flex">
+            <div class="form-group form-text flex-box">
+                <label for="">First Name</label>
+                <input id="first-name" type="text" name="first-name">
+            </div>
+            <div class="form-group form-text flex-box">
+                <label for="">Last Name</label>
+                <input id="last-name" type="text" name="last-name">
+            </div>
+        </div>
+
+        <div class="form-group form-text">
+            <label for="">Patient Age <span>*</span></label>
+            <input id="age" type="number" name="age">
+            <span class="form-message"></span>
+        </div>
+
+        <div class="form-group form-text">
+            <label for="">Nickname</label>
+            <input id="nickname" type="text" name="nickname">
+        </div>
+
+        <div class="form-group form-text">
+            <label for="">Patient Gender <span>*</span></label>
+            <select name="gender" id="gender">
+                <option value="">- Select -</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Others">Others</option>
+            </select>
+            <span class="form-message"></span>
+        </div>
+
+        <div class="form-group form-text">
+            <label for="">Phone no.</label>
+            <input id="phone-no" type="text" name="phone-no">
+        </div>
+
+        <div class="form-group form-text">
+            <label for="">Email <span>*</span></label>
+            <input id="email" type="text" name="email">
+            <span class="form-message"></span>
+        </div>
+
+        <div class="form-group form-text">
+            <label for="">With whome do you live?</label>
+            <input id="live-with" type="text" name="live-with">
+        </div>
+
+        <div class="form-group form-group-radio">
+            <p for="marital-status">Marital Status <span>*</span></p>
+            <input type="radio" id="married" name="marital-status" value="Married" class="form-control">
+            <label for="married">Married</label>
+            <br>
+            <input type="radio" id="unmarried" name="marital-status" value="Unmarried" class="form-control">
+            <label for="unmarried">Unmarried</label>
+            <br>
+            <input type="radio" id="other" name="marital-status" value="Other" class="form-control">
+            <label for="other">Other</label>
+            <br>
+            <span class="form-message"></span>
+        </div>
+
+        <div class="form-group form-text status-other animation-wide">
+            <label for="">Marital status(other) <span>*</span></label>
+            <input type="text" name="marital_status_other">
+            <span class="form-message"></span>
+        </div>
+
+        <div class="form-group form-group-radio">
+            <p for="smoke">Do you smoke?</p>
+            <input type="radio" id="smoke-yes" name="smoke" value="Yes" class="form-control">
+            <label for="smoke-yes">Yes</label>
+            <br>
+            <input type="radio" id="smoke-no" name="smoke" value="No" class="form-control">
+            <label for="smoke-no">No</label>
+            <br>
+        </div>
+
+        <div class="form-group">
+            <label for="">Personal opinion</label>
+            <textarea class="" name="opinion" id="opinion" cols="2" rows="4"></textarea>
+        </div>
+
+        <input class="btn form-submit" type="submit" value="Submit Form">
+        
+        <div id="return" style="margin-top: 40px; line-height: 30px;"></div>
+        <div id="crawlData" style="margin-top: 40px; line-height: 30px;"></div>
+    </form>
+
+
+
+    <script src="assets/validate.js"></script>
+    <script>
+        Validator({
+            form: '#form-patient',
+            formGroupSelector: '.form-group',
+            errorSelector: '.form-message',
+            rules: [
+                Validator.isRequired('#age'),
+                Validator.isRequired('#email'),
+                Validator.isEmail('#email'),
+                Validator.isRequired('#gender'),
+                Validator.isRequired('input[name="marital-status"]'),
+                Validator.isRequired('#marital_status_other')
+            ],
+            onSubmit: function (data = null) {
+                if (data != null) {
+                    for (var item in data) {
+                        if (data[item] == "Other")
+                            data[item] = data.marital_status_other;
+
+                        if (!item.value)
+                            item.value = '';
+                    }
+                    delete data.marital_status_other;
+
+                    fetch('https://63522072dfe45bbd55cfa7ee.mockapi.io/validate', {
+                        method: 'POST',
+                        headers: {
+                        'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+
+                    document.getElementById("return").innerHTML  = '<span style="color:green">Bạn đã nhập thành công</span>';
+                    setTimeout(() => location.reload(), 3000);
+                                         
+                } else {
+                    document.getElementById("return").innerHTML  = '<span style="color:red">Bạn cần nhập đầy đủ thông tin</span>';
+                }
+            }
+        })
+
+
+        // Call API
+        const crawlData = async () => {
+                const response = await fetch('https://63522072dfe45bbd55cfa7ee.mockapi.io/validate');
+                const data = response.json();
+                // console.log(data);
+                return data;
+        }
+
+        crawlData()
+            .then((data) => {
+                var printData = '<span style="color:red"><strong>DANH SÁCH ĐÃ NHẬP</strong></span> <br>';
+                data.forEach((value) => {
+                    printData += `<span style="color:red; font-weight:600">Thông tin người thứ: ${value.id}</span> <br>`;
+                    for (var item in value) {
+                        // console.log(item + ': ' + value[item]);
+                        if (item != 'id')
+                            printData += `${item}: ${value[item]} <br>`;
+                    }
+
+                })
+                console.log(data);
+                document.getElementById("crawlData").innerHTML  = printData;
+            })
+            .catch((error) => {
+                document.getElementById("crawlData").innerHTML  = `<span style="color:red">Lỗi khi lấy dữ liệu từ API <br>Tên lỗi: ${error}</span>`;
+            });
+
+
+        // document.querySelector('.status-other input').setAttribute('id', 'marital_status_other');
+
+         // Hiển thị Ô nhập marital_status_other
+        const showS = document.querySelectorAll('input[name="marital-status"]');
+        // console.log(showS);
+        for (var show of showS) {
+            // console.log(show.value);    
+            if (show.value == "Other") {
+                show.addEventListener("click", () => {
+                    document.querySelector('.status-other').classList.add('open');
+                    document.querySelector('.status-other input').setAttribute('id', 'marital_status_other');
+                })
+            } else {
+                show.addEventListener("click", () => {
+                    document.querySelector('.status-other').classList.remove('open');
+                    document.querySelector('.status-other input').removeAttribute('id', 'marital_status_other');
+                })
+            }
+        }
+    </script>
+</body>
+</html>

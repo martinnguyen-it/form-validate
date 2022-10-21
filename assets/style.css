@@ -1,0 +1,138 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Helvetica, Arial, sans-serif;
+    color: #002f6b;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #e1eeff5b;
+    min-height: 800px;
+    margin-bottom: 50px;
+}
+
+header {
+    font-size: 35px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+    color: #004192;
+}
+
+header p {
+    font-size: 20px;
+    font-weight:300;
+    margin: 10px 0 30px;
+    color: #000;
+}
+
+form {
+    width: 740px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 30px 50px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-text input, select, textarea {
+    padding: 6px 12px;
+    border: 1px solid #ced4da;
+    outline: none;
+    font-size: 16px;
+    line-height: 1.5;
+    width: 100%;
+    border-radius: 2px;
+    resize: vertical;
+}
+
+.form-text input:focus, select:focus {
+    background-color: #fff;
+    border-color: #80bdff;
+    color: #495057;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.flex-box {
+    flex-basis: 48%;
+}
+
+.form-group span {
+    color: red;
+}
+
+.form-group-radio p {
+    margin-bottom: 10px;
+}
+
+.form-group-radio label {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    background-color: #0171ff;
+    color: #fff;
+    box-shadow: 0px 7px 22px 0px rgb(0 0 0 / 25%);
+    border: none;
+    font-size: 15px;
+}
+
+.btn:hover {
+    box-shadow: none;
+    opacity: 0.7;;
+}
+
+.form-group.invalid {
+    border-color: #f33a58 !important;
+    border: 1px;
+}
+
+.form-text.invalid input,.form-text.invalid select {
+    border: 1px solid #f33a58;
+}
+
+
+.form-message {
+    font-size: 15px;
+    color: #f33a58;
+
+}
+
+.status-other {
+    display: none;
+}
+
+.open {
+    display: block;
+}
+
+.animation-wide {
+    animation: wide ease 0.5s;
+}
+
+ @keyframes wide {
+    from {
+        opacity: 0.2;
+        transform: translateY(-25%);
+    } to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+ }
