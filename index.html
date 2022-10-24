@@ -112,12 +112,12 @@
             formGroupSelector: '.form-group',
             errorSelector: '.form-message',
             rules: [
-                // Validator.isRequired('#age'),
-                // Validator.isRequired('#email'),
-                // Validator.isEmail('#email'),
-                // Validator.isRequired('#gender'),
-                // Validator.isRequired('input[name="marital-status"]'),
-                // Validator.isRequired('#marital_status_other')
+                Validator.isRequired('#age'),
+                Validator.isRequired('#email'),
+                Validator.isEmail('#email'),
+                Validator.isRequired('#gender'),
+                Validator.isRequired('input[name="marital-status"]'),
+                Validator.isRequired('#marital_status_other')
             ],
             onSubmit: function (data = null) {
                 if (data != null) {
